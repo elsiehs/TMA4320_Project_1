@@ -28,20 +28,27 @@ def solve_heat_equation(
     dt = t[1] - t[0]
 
     X, Y = np.meshgrid(x, y, indexing="ij")
-
     #######################################################################
     # Oppgave 3.2: Start
     #######################################################################
 
     # Placeholder initialization — replace this with your implementation
-    T = np.zeros((cfg.nt, cfg.nx, cfg.ny))
+    T = np.zeros((cfg.nt, cfg.nx, cfg.ny)) # en array med shape (t-verdier, x-verdier, y-verdier)
+    T[0] = cfg.T_outside                   # initialbetingelse
+
+    A = _build_matrix(cfg, dx, dy, dt) # Bygger A matrisen
+    
+    for tid in range(0, cfg.nt-1):    
+        b_k = _build_rhs(cfg, T[tid], X, Y, dx, dy, dt, t[tid+1])  # Bygger b vektoren for hver iterasjon
+        T_ny = np.linalg.solve(A, b_k) # en flat vektor
+        T_ny_reshape = T_ny.reshape(cfg.nx, cfg.ny) # reshaper s.a. vli får en "grid struktur"
+        T[tid+1] = T_ny_reshape 
 
     #######################################################################
     # Oppgave 3.2: Slutt
     #######################################################################
 
     return x, y, t, T
-
 
 def _build_matrix(cfg: Config, dx: float, dy: float, dt: float) -> np.ndarray:
     """Build the implicit Euler system matrix."""
