@@ -38,7 +38,7 @@ def solve_heat_equation(
 
     A = _build_matrix(cfg, dx, dy, dt) # Bygger A matrisen
     
-    for tid in range(0, cfg.nt-1):    
+    for tid in range(len(t)-1):    
         b_k = _build_rhs(cfg, T[tid], X, Y, dx, dy, dt, t[tid+1])  # Bygger b vektoren for hver iterasjon
         T_ny = np.linalg.solve(A, b_k) # en flat vektor
         T_ny_reshape = T_ny.reshape(cfg.nx, cfg.ny) # reshaper s.a. vli får en "grid struktur"
