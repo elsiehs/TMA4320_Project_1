@@ -35,7 +35,32 @@ def train_nn(
     # Oppgave 4.3: Start
     #######################################################################
 
-    # Update the nn_params and losses dictionary
+    vekt_data = cfg.lambda_data
+    vekt_ic = cfg.lambda_ic
+
+    def objektive_fn(nn_params): # dårlig praksis å definere funskjon inne en funskjon
+        loss = vekt_data * data_loss(nn_params, sensor_data, cfg) + vekt_ic * ic_loss(nn_params, ic_epoch, cfg)
+        return loss
+    
+    #jit-ifiserer funskjonen slik at dn går raskere i for-loopen
+    value_grad_jit = jax.jit(jax.value_and_grad(objektive_fn))
+
+    for epoch in tqdm(range(cfg.num_epochs), desc="Training NN"):
+        ic_epoch, key = sample_ic(key, cfg)
+        
+        # beregner verdien og gradienten til data_loss, og IC_loss funksjonen, bruke JIT?
+        value_total, gradient_total =  value_grad_jit(nn_params)  
+        value_data =  data_loss(nn_params, sensor_data, cfg)
+        value_IC = ic_loss(nn_params, ic_epoch, cfg)
+        
+        # adam_state: vekter som oppdateres for hvert steg
+        # grads: gradienten av loss_fn med respekt til nn_params
+        nn_params, adam_state = adam_step(nn_params, gradient_total, adam_state, lr=cfg.learning_rate)
+        
+        # Update the nn_params and losses dictionary
+        losses["total"].append(value_total)
+        losses["data"].append(value_data)
+        losses["ic"].append(value_IC)
 
     #######################################################################
     # Oppgave 4.3: Slutt
