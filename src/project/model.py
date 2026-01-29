@@ -83,10 +83,19 @@ def forward(
     #######################################################################
     # Oppgave 4.1: Start
     #######################################################################
-
-    # Placeholder initialization — replace this with your implementation
-    out = None
-
+    # normaliser vektorene x, y, t
+    x_norm = (x - cfg.x_min) / (cfg.x_max - cfg.x_min)
+    y_norm = (y - cfg.y_min) / (cfg.y_max - cfg.y_min)
+    t_norm = (t - cfg.t_min) / (cfg.t_max - cfg.t_min)
+    
+    # stable normalisertevektorer til en array med form (N, 3)
+    a = jnp.stack([x_norm, y_norm, t_norm], axis=-1)
+    
+    for i in range(len(nn_params)):
+        w_i, b_i = nn_params[i] # Bruker lag i
+        a = jnp.tanh(a @ w_i + b_i) # Merk a @ w_i i stedet for w_i @ a
+    
+    out = a.squeeze()
     #######################################################################
     # Oppgave 4.1: Slutt
     #######################################################################
