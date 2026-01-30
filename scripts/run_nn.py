@@ -20,6 +20,46 @@ def main():
     #######################################################################
     # Oppgave 4.4: Start
     #######################################################################
+# Plott hvordan tapene utvikler seg i løpet av treningen, og visualiser prediksjonene
+# fra det ferdig trente nettverket
+
+# genererer treningsdata
+    print("Generating training data...")
+    x, y, t, T_fdm, sensor_data = generate_training_data(cfg) 
+    
+    nn_params, losses_dict = train_nn(sensor_data, cfg)
+
+    print("Preating prediction grid...")
+    T_pred = predict_grid(nn_params, x, y, t, cfg)
+    
+    print("Generating NN visualizations...")
+    plot_snapshots(
+        x,
+        y,
+        t,
+        T_pred,
+        save_path="output/nn/nn_snapshots.png",
+    )
+    create_animation(
+        x, y, t, T_pred, title="Neural Network", save_path="output/nn/nn_animation.gif"
+    )
+    
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1)
+    ax1.plot("total", data=losses_dict)
+    ax1.set_title("Total losses")
+    ax1.set_xlabel("Epoker")
+    ax1.set_ylabel("Tap")
+
+    ax2.plot("data", data=losses_dict)
+    ax2.set_title("Data losses")
+    ax2.set_xlabel("Epoker")
+    ax2.set_ylabel("Tap")
+
+    ax3.plot("ic", data=losses_dict)
+    ax3.set_title("Initial condition (IC) losses")
+    ax3.set_xlabel("Epoker")
+    ax3.set_ylabel("Tap")
+    plt.show()
 
     #######################################################################
     # Oppgave 4.4: Slutt
