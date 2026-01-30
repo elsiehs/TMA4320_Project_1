@@ -44,8 +44,21 @@ def init_pinn_params(cfg: Config, seed: int | None = None):
     # Oppgave 5.1: Start
     #######################################################################
 
-    # Placeholder initialization — replace this with your implementation
-    pinn_params = {}
+    # NN-parametre
+    nn_params = init_nn_params(cfg, key=nn_key)
+
+    # Testene krever disse scalar-keyene 
+    scalar_names = ["log_alpha", "log_power", "log_k", "log_h"]
+
+    # Initier skalarene som (1,)-arrays med jax.random.normal
+    scalar_keys = jax.random.split(scalars_key, len(scalar_names))
+    scalars = {name: jax.random.normal(k, (1,)) for name, k in zip(scalar_names, scalar_keys)}
+
+    # Samle alt i en dictionary
+    pinn_params = {
+        "nn": nn_params,
+        **scalars,
+    }
 
     #######################################################################
     # Oppgave 5.1: Slutt
