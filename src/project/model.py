@@ -104,9 +104,12 @@ def forward(
     # stable normalisertevektorer til en array med form (N, 3)
     a = jnp.stack([x_norm, y_norm, t_norm], axis=-1)
     
-    for i in range(len(nn_params)):
+    for i in range(len(nn_params)-1):
         w_i, b_i = nn_params[i] # Bruker lag i
         a = jnp.tanh(a @ w_i + b_i) # Merk a @ w_i i stedet for w_i @ a
+    
+    w_i, b_i = nn_params[-1]
+    a = (a @ w_i + b_i)
     
     out = a.squeeze()
     #######################################################################
