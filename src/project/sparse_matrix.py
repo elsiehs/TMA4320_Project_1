@@ -1,5 +1,5 @@
 # """
-# fdm.py, men med implementert sparse matrix for å effektivere prosessen. 
+# samme funksjoner som fdm.py, men med implementert sparse matrix for å effektivere prosessen. 
 # For å kjøre denne må man endre data.py og _init_.py slik at
 # de importerer solve_heat_equation fra denne filen, og ikke fdm. I tillegg kommentere ut fdm.py """
 
