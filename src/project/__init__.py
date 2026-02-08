@@ -1,6 +1,6 @@
 from .config import Config, load_config
 from .data import generate_training_data
-from .fdm import solve_heat_equation
+from .sparse_matrix import solve_heat_equation
 from .loss import data_loss, ic_loss, physics_loss
 from .model import forward, init_nn_params, init_pinn_params, predict_grid
 from .optim import adam_step, init_adam

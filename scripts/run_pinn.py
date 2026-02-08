@@ -81,6 +81,28 @@ def main():
     plt.xlabel("Epochs")
     plt.ylabel("Losses")
     fig.savefig("output/figures_pinn/Losses_pinn_orginal.png")
+
+    # ---------------------------------------------------------
+# Plot all four PINN losses together in one comparison plot
+# ---------------------------------------------------------
+
+    fig2, ax = plt.subplots(figsize=(7,5))
+
+    ax.plot(losses_dict["physics"], label="Physics loss", linewidth=1.5)
+    ax.plot(losses_dict["data"], label="Data loss", linewidth=1.5)
+    ax.plot(losses_dict["ic"], label="IC loss", linewidth=1.5)
+    ax.plot(losses_dict["bc"], label="BC loss", linewidth=1.5)
+    ax.plot(losses_dict["total"], label="Total loss", linewidth=1.5)
+
+    ax.set_title("Comparison of PINN Loss Components")
+    ax.set_xlabel("Epochs")
+    ax.set_ylabel("Loss value")
+    ax.set_yscale("log")  # Recommended: losses may differ by several magnitudes
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+
+    fig2.savefig("output/figures_pinn/Losses_pinn_comparison.png")
+    print("Saved combined loss plot at output/figures_pinn/Losses_pinn_comparison.png")
     plt.show()
     #######################################################################
     # Oppgave 5.4: Slutt

@@ -51,7 +51,7 @@ def main():
         x,
         y,
         t,
-        (T_fdm _ T_pred),
+        (T_fdm - T_pred),
         save_path="output/fdm_vs_nn/fdm_vs_nn_snapshots.png",
     )
     create_animation(
