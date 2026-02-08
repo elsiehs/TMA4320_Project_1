@@ -4,7 +4,7 @@ import jax.numpy as jnp
 import numpy as np
 
 from .config import Config
-from .sparse_matrix import solve_heat_equation
+from .fdm import solve_heat_equation
 
 
 def generate_training_data(
