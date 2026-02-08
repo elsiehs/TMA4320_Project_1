@@ -97,13 +97,14 @@ def physics_loss(pinn_params, interior_points, cfg: Config):
     
     # Varmekilden
     IQ = cfg.is_source(x, y).astype(jnp.float32)
-
+   
     # Ligning 14 
     def _pde_residual_scalar(pinn_params, x, y, t, cfg: Config):
         f_t  = grad(f, 2)(x, y, t)
         f_xx = grad(grad(f, 0), 0)(x, y, t)
         f_yy = grad(grad(f, 1), 1)(x, y, t)
-        lap  = f_xx + f_yy
+        lap = f_xx + f_yy
+
         return f_t - jnp.exp(pinn_params["log_alpha"]) * lap - jnp.exp(pinn_params["log_power"]) * IQ
 
         

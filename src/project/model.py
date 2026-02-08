@@ -54,6 +54,9 @@ def init_pinn_params(cfg: Config, seed: int | None = None):
     scalar_keys = jax.random.split(scalars_key, len(scalar_names))
     scalars = {name: jax.random.normal(k, (1,)) for name, k in zip(scalar_names, scalar_keys)}
 
+    P0 = 15.0
+    scalars["log_power"] = jnp.array([jnp.log(P0)], dtype=jnp.float32)
+
     # Samle alt i en dictionary
     pinn_params = {
         "nn": nn_params,
