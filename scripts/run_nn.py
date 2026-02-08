@@ -78,7 +78,7 @@ def main():
     #ax3.set_ylabel("Losses")
     plt.xlabel("Epochs")
     plt.ylabel("Losses")
-    fig.savefig("output/figures_nn/Losses_nn_orginal.png")
+    fig.savefig("output/nn/Losses_nn_original.png")
     plt.show()
     
     #######################################################################
